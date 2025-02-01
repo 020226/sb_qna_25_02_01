@@ -93,4 +93,17 @@ class QnaServiceApplicationTests {
 		q.setSubject("수정된 제목");
 		questionRepository.save(q);
 	}
+
+	@Test
+	@DisplayName("질문 데이터 삭제하기")
+	void t8() {
+		// 삭제 전 데이터 2개
+		assertEquals(2, questionRepository.count());
+		Optional<Question> oq = questionRepository.findById(1);
+		assertTrue(oq.isPresent());
+		Question q = oq.get();
+		questionRepository.delete(q);
+		// 삭제 후 데이터 1개
+		assertEquals(1, questionRepository.count());
+	}
 }
