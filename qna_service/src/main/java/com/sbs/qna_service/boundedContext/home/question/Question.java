@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -30,5 +31,11 @@ public class Question {
   // Answer 엔티티에서 Question 엔티티를 참조한 속성인 question을 mappedBy에 전달해야 함
   // 질문을 삭제하면 그에 달린 답변들도 함께 삭제될 수 있도록: cascade = CascadeType.REMOVE
   @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
-  private List<Answer> answerList;
+  private List<Answer> answerList = new ArrayList<>();
+
+  // 외부에서 answerList 필드에 접근하는 것을 차단
+  public void addAnswer(Answer a) {
+    a.setQuestion(this); // Question 객체에 Answer 추가
+    answerList.add(a); // Answer 객체에 Question 설정
+  }
 }

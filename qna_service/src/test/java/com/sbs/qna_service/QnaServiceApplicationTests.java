@@ -56,9 +56,10 @@ class QnaServiceApplicationTests {
 		q2.setCreateDate(LocalDateTime.now());
 		questionRepository.save(q2);
 
+		// 답변 하나 생성
 		Answer a1 = new Answer();
 		a1.setContent("네 자동으로 생성됩니다.");
-		a1.setQuestion(q2);  // 어떤 질문의 답변인지 알기위해서 Question 객체가 필요하다.
+		q2.addAnswer(a1); // 질문과 답변을 한 로직을 통해서 처리
 		a1.setCreateDate(LocalDateTime.now());
 		answerRepository.save(a1);
 	}
