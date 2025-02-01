@@ -74,4 +74,12 @@ class QnaServiceApplicationTests {
 		Question q = questionRepository.findBySubjectAndContent("sbb가 무엇인가요?", "sbb에 대해서 알고 싶습니다.");
 		assertEquals(1, q.getId());
 	}
+
+	@Test
+	@DisplayName("findBySubjectLike") // subject 값 중 특정 문자열을 포함하는 데이터 조회
+	void t6() {
+		List<Question> qList = questionRepository.findBySubjectLike("sbb%");
+		Question q = qList.get(0);
+		assertEquals("sbb가 무엇인가요?", q.getSubject());
+	}
 }
