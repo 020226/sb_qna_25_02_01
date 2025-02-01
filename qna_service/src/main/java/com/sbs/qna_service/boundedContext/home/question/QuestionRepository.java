@@ -9,4 +9,7 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
   // JPA는 리포지터리의 메서드명을 분석하여 쿼리를 만들고 실행한다
   // findBy+엔티티 속성명 -> 입력한 속성의 값으로 데이터를 조회
   Question findBySubject(String subject);
+
+  // AND 연산잘ㄹ 사용하여 두 개의 열을 조회
+  Question findBySubjectAndContent(String subject, String content);
 }
