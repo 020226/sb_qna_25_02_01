@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class QnaServiceApplicationTests {
@@ -81,5 +82,15 @@ class QnaServiceApplicationTests {
 		List<Question> qList = questionRepository.findBySubjectLike("sbb%");
 		Question q = qList.get(0);
 		assertEquals("sbb가 무엇인가요?", q.getSubject());
+	}
+
+	@Test
+	@DisplayName("질문 데이터 수정하기")
+	void t7() {
+		Optional<Question> oq = questionRepository.findById(1);
+		assertTrue(oq.isPresent()); // assertTrue은 괄호 안의 값이 참인지 테스트 - false면 테스트 종료
+		Question q = oq.get();
+		q.setSubject("수정된 제목");
+		questionRepository.save(q);
 	}
 }
