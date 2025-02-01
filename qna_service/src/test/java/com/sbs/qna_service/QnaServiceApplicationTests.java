@@ -4,6 +4,7 @@ import com.sbs.qna_service.boundedContext.home.answer.Answer;
 import com.sbs.qna_service.boundedContext.home.answer.AnswerRepository;
 import com.sbs.qna_service.boundedContext.home.question.Question;
 import com.sbs.qna_service.boundedContext.home.question.QuestionRepository;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -166,5 +167,30 @@ class QnaServiceApplicationTests {
 		assertTrue(oa.isPresent());
 		Answer a = oa.get();
 		assertEquals(2, a.getQuestion().getId());
+	}
+
+	/*
+	테스트 코드에서는 QuestionRepository가 findById 메서드를 통해
+	Question 객체를 조회하고 나면 DB 세션이 끊어져 그 이후부터 오류 발생함.
+	@Transactional 애너테이션을 사용하면 메서드가 종료될 때까지 DB 세션이 유지된다.
+
+	지연(Lazy) 방식, fetch=FetchType.LAZY: 데이터를 필요한 시점에 가져오는 방식
+	즉시(Eager) 방식, fetch=FetchType.EAGER: q 객체를 조회할 때 미리 answer 리스트를 모두 가져오는 방식
+	*/
+
+	// 답변에 연결된 질문에 접근 -> a.getQuestion()
+	@Transactional
+	@Test
+	@DisplayName("질문 데이터를 통해 답변 데이터 찾기")
+	void t11() {
+		Optional<Question> oq = questionRepository.findById(2);
+		assertTrue(oq.isPresent());
+		Question q = oq.get();
+
+		// DB 세션이 종료되어 q.getAnswerList()가 실행되지 않음 -> @Transaction 으로 해결
+		List<Answer> answerList = q.getAnswerList();
+
+		assertEquals(1, answerList.size());
+		assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
 	}
 }
