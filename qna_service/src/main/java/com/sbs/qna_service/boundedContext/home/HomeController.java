@@ -11,4 +11,12 @@ public class HomeController {
   public String showHome() {
     return "안녕";
   }
+
+  @GetMapping("/")
+  public String root() {
+    // 리다이렉트란 클라이언트가 요청하면 새로운 URL로 전송하는 것을 의미
+    // localhost:8080로 접속하면 localhost:8080/question/list로 주소가 바뀌면서
+    // 질문 목록이 있는 웹 페이지로 연결됨
+    return "redirect:/question/list"; // `/question/list` URL로 페이지를 리다이렉트하라
+  }
 }
