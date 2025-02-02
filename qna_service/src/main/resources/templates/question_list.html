@@ -6,8 +6,12 @@
         </tr>
     </thead>
     <tbody> <!-- 타임리프는 Model 객체에 저장한 questionList를 ${questionList}로 읽을 수 있다 -->
-        <tr th:each="question : ${questionList}">
-            <td th:text="${question.subject}"></td>
+        <tr th:each="question, index : ${questionList}">
+            <td>
+                <!-- 질문의 상세 내용이 담긴 페이지로 이동하는 링크. URL은 반드시 @{와 } 문자 사이에 입력-->
+                <!-- 자바 객체의 값을 더할 때는 반드시 다음처럼 |로 좌우를 감싸 주어야 함 -->
+                <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
+            </td>
             <td th:text="${question.createDate}"></td>
         </tr>
     </tbody>
