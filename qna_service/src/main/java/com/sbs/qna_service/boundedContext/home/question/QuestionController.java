@@ -1,5 +1,6 @@
 package com.sbs.qna_service.boundedContext.home.question;
 
+import com.sbs.qna_service.boundedContext.home.answer.AnswerForm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,7 @@ public class QuestionController {
   // http://localhost:8080/question/detail/2의 숫자 2처럼 변하는 id값을 얻을 때에는
   // @PathVariable 애너테이션을 사용
   @GetMapping(value = "/detail/{id}")
-  public String detail(Model model, @PathVariable("id") Integer id) {
+  public String detail(Model model, @PathVariable("id") Integer id, AnswerForm answerForm) {
     Question question = questionService.getQuestion(id);
     model.addAttribute("question", question);
     return "question_detail";
