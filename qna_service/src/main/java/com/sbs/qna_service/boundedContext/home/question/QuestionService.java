@@ -4,9 +4,9 @@ import com.sbs.qna_service.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.zip.DataFormatException;
 
 @RequiredArgsConstructor
 @Service
@@ -28,5 +28,13 @@ public class QuestionService {
       // 만약 id값에 해당하는 질문 데이터가 없을 경우 DataNotFoundException
       throw new DataNotFoundException("question not found");
     }
+  }
+
+  public void create(String subject, String content) {
+      Question q = new Question();
+      q.setSubject(subject);
+      q.setContent(content);
+      q.setCreateDate(LocalDateTime.now());
+      questionRepository.save(q);
   }
 }

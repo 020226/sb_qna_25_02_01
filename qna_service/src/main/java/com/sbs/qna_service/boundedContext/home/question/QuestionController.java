@@ -3,9 +3,7 @@ package com.sbs.qna_service.boundedContext.home.question;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,9 +27,24 @@ public class QuestionController {
   // http://localhost:8080/question/detail/2의 숫자 2처럼 변하는 id값을 얻을 때에는
   // @PathVariable 애너테이션을 사용
   @GetMapping(value = "/detail/{id}")
-  public String detail(Model model, @PathVariable("id") Integer id){
+  public String detail(Model model, @PathVariable("id") Integer id) {
     Question question = questionService.getQuestion(id);
     model.addAttribute("question", question);
     return "question_detail";
+  }
+
+  @GetMapping("/create")
+  public String questionCreate() {
+    return "question_form";
+  }
+
+  // questionCreate 오버로딩
+  // 화면에서 입력한 제목(subject)과 내용(content)을 매개변수로 받는다
+  // question_form.html에서 입력 항목으로 사용한 subject, content의 이름과
+  // RequestParam의 value 값이 동일해야 함
+  @PostMapping("/create")
+  public String questionCreate(@RequestParam(value = "subject") String subject, @RequestParam(value = "content") String content) {
+    questionService.create(subject, content); // QuestionService의 create 메서드를 호출하여 질문 데이터(subject, content)를 저장
+    return "redirect:/question/list"; // 질문 저장후 질문목록으로 이동
   }
 }
