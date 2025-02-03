@@ -33,9 +33,7 @@
     <!-- /answer/create/2 -> ‘2’는 질문 데이터의 고유 번호를 의미 -->
     <!-- POST 방식은 주로 데이터를 저장하는 용도 -->
     <form th:action="@{|/answer/create/${question.id}|}" th:object="${answerForm}" method="post" class="my-3">
-        <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
-            <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
-        </div>
+        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
         <textarea th:field="*{content}" rows = "15" class="form-control"></textarea>
         <input type="submit" value="답변등록" class="btn btn-primary my-2">
     </form>

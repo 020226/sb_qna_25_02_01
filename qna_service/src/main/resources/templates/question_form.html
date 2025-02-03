@@ -3,13 +3,8 @@
     <h5 class="my-3 border-bottom pb-2">질문등록</h5>
     <!-- 405오류 발생 `/question/create` URL을 POST 방식으로는 처리할 수 없음 -->
     <form th:action="@{/question/create}" th:object="${questionForm}" method="post">
-        <!-- 검증이 실패한 이유는 #fields.allErrors()로 확인. 오류의 내용이 담겨 있다 -->
-        <!-- 부트스트랩의 alert alert-danger 클래스를 사용하여 오류 메시지가 붉은 색으로 표시되도록 -->
-        <!-- 오류를 표시하려면 타임리프의 th:object 속성이 반드시 필요 -->
-        <!-- th:object는 <form>의 입력 항목들이 QuestionForm과 연결된다는 점을 타임리프에 알려주는 역할 -->
-        <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
-            <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
-        </div>
+        <!-- th:replace 속성에 의해 div 요소의 내용을 form_errors 템플릿으로 대체하라는 의미 -->
+        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
         <div class="mb-3">
             <!-- 제목 input 텍스트 창 사용 -->
             <label for="subject" class="form-label">제목</label>
