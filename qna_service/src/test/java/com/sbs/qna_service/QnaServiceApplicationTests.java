@@ -4,6 +4,7 @@ import com.sbs.qna_service.boundedContext.home.answer.Answer;
 import com.sbs.qna_service.boundedContext.home.answer.AnswerRepository;
 import com.sbs.qna_service.boundedContext.home.question.Question;
 import com.sbs.qna_service.boundedContext.home.question.QuestionRepository;
+import com.sbs.qna_service.boundedContext.home.question.QuestionService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,12 +15,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class QnaServiceApplicationTests {
+
+	@Autowired
+	private QuestionService questionService;
 
 	// 의존성 주입: 스프링이 객체를 대신 생성하여 주입하는 기법
 	// questionRepository 객체를 자동으로 만들어 주입함
@@ -192,5 +197,14 @@ class QnaServiceApplicationTests {
 
 		assertEquals(1, answerList.size());
 		assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
+	}
+
+	@Test
+	@DisplayName("대량의 테스트 데이터 만들기")
+	void t12() {
+		IntStream.rangeClosed(3, 300)
+				.forEach(
+						no -> questionService.create("테스트 제목입니다.%d".formatted(no), "테스트 내용입니다.%d".formatted(no)
+						));
 	}
 }
