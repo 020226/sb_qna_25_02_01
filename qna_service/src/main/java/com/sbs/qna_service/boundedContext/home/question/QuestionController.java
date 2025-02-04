@@ -6,12 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.data.domain.Page;
 
 // 프리픽스(prefix)란 URL의 접두사 또는 시작 부분을 가리키는 말
 // 메서드 단위에서는 /question을 생략하고 그 뒷부분만을 적을 수 있도록 수정
@@ -24,9 +21,9 @@ public class QuestionController {
   // Model 객체는 자바 클래스와 템플릿 간의 연결고리
   // Model 객체에 값을 담아두면 템플릿에서 그 값을 사용할 수 있음
   @GetMapping("/list") // `/question` + `/list`가 되어 최종 URL 매핑은 `/question/list`가 된다
-  public String list(Model model) { // 매개변수로 Model을 지정하면 객체가 자동으로 생성
-    List<Question> questionList = questionService.getList(); // 질문 목록 questionList를 생성
-    model.addAttribute("questionList", questionList); // Model 객체에 questionList 이름으로 저장
+  public String list(Model model, @RequestParam(value="page", defaultValue="0") int page) { // 매개변수로 Model을 지정하면 객체가 자동으로 생성
+    Page<Question> paging = questionService.getList(page);
+    model.addAttribute("paging", paging); // 템플릿에 Page 클래스의 객체인 paging을 model에 설정하여 전달
     return "question_list";
   }
 

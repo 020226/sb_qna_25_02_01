@@ -2,10 +2,12 @@ package com.sbs.qna_service.boundedContext.home.question;
 
 import com.sbs.qna_service.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -14,8 +16,9 @@ public class QuestionService {
   // questionRepository 객체는 @RequiredArgsConstructor에 의해 생성자 방식으로 주입
   private final QuestionRepository questionRepository;
 
-  public List<Question> getList() {
-    return questionRepository.findAll();
+  public Page<Question> getList(int page) {
+    Pageable pageable = PageRequest.of(page, 10); // page는 조회할 페이지의 번호이고, 10은 한 페이지에 보여 줄 게시물의 개수
+    return questionRepository.findAll(pageable);
   }
 
   // id값으로 질문 데이터를 조회하는 메서드

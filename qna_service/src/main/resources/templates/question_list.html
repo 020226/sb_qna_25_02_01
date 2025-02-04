@@ -9,7 +9,7 @@
             </tr>
         </thead>
         <tbody> <!-- 타임리프는 Model 객체에 저장한 questionList를 ${questionList}로 읽을 수 있다 -->
-            <tr th:each="question, loop : ${questionList}">
+            <tr th:each="question, loop : ${paging}">
                 <!-- 번호는 loop.count를 사용하여 표시 -->
                 <td th:text="${loop.count}"></td>
                 <td>
