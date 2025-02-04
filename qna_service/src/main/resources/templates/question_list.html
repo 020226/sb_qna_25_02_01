@@ -22,7 +22,29 @@
             </tr>
         </tbody>
     </table>
-
+    <!-- 페이징처리 시작 -->
+    <div th:if="${!paging.isEmpty()}">
+        <ul class="pagination justify-content-center"> <!--  pagination은 ul 요소 안에 있는 내용을 꾸밀 수 있다 -->
+            <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'"> <!-- page-item은 각 페이지 번호나 '이전', '다음' 버튼을 나타낸다 -->
+                <a class="page-link"
+                   th:href="@{|?page=${paging.number-1}|}"> <!-- page-link는 '이전', '다음' 버튼에 링크를 나타낸다 -->
+                    <span>이전</span>
+                </a>
+            </li>
+            <li th:each="page: ${#numbers.sequence(0, paging.totalPages-1)}"
+                th:if="${page >= paging.number-5 and page <= paging.number+5}"
+                th:classappend="${page == paging.number} ? 'active'"
+                class="page-item">
+                <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+            </li>
+            <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                <a class="page-link" th:href="@{|?page=${paging.number+1}|}">
+                    <span>다음</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <!-- 페이징처리 끝 -->
     <!-- 질문 등록 버튼 -->
     <a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
 </div>
