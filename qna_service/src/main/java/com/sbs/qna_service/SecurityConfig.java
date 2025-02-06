@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration // 스프링의 환경 설정 파일임을 의미
@@ -13,5 +15,12 @@ public class SecurityConfig {
   @Bean // SecurityFilterChain 빈을 생성
   SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     return http.build();
+  }
+
+  // PasswordEncoder 객체를 빈으로 등록해서 사용
+  // BCryptPasswordEncoder를 사용한 모든 프로그램을 일일이 찾아다니며 수정하지 않도록
+  @Bean
+  PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 }
